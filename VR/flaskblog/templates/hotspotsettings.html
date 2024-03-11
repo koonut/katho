@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styleshotspot.css">
+    <link rel="stylesheet" href="static/styleshotspotset.css">
+    <title>Virtual Tour</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body>
+    <header class="title-bar">
+        <span class="title">Experience Type Settings: Hotspot</span>
+        <div class="buttons-container">
+            <a class="nav-item nav-link" href="{{ url_for('main.home') }}"><img class="icon"
+                    src="./static/icons/home.png" alt="Home icon"></a>
+            <img class="icon" src="./static/icons/save.png" alt="Save icon">
+            <img class="icon" src="./static/icons/settings.png" alt="Settings icon">
+        </div>
+    </header>
+    <div class="container">
+        <h2> Settings</h2>
+        <div class="row d-flex align-items-stretch">
+            <div class="col-sm-6">
+                <label>Disable scrolling in all videos</label>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="col-sm-6">
+                <label>Override individual settings</label>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div class="row d-flex align-items-stretch">
+            <div class="col-sm-6">
+                <label>Disable going to the main page</label>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="col-sm-6">
+                <label>override individual settings</label>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        Keep in mind that when activating the override, that all individual settings of the scenes in this experience are not being used. If the override is active only the settiings on this page will be used.
+        <div class="button-containerset">
+            <button class="btnset" onclick="save()">Save</button>
+            <button class="btnset" onclick="cancel()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $(".icon[src='./static/icons/save.png'], .btnset:contains('Save')").click(function () {
+                alert("Saved the settings");
+                window.location.href = "{{ url_for('posts.hotspot') }}"; // replace 
+            });
+        });
+    </script>
+
+    
+</body>
+
+</html>

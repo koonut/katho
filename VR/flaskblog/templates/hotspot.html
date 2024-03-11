@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styleshotspot.css">
+    <title>Virtual Tour</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body>
+    <header class="title-bar">
+        <span class="title">Library Name - Experience Name - Experience Type </span>
+        <div class="buttons-container">
+            <a class="nav-item nav-link" href="{{ url_for('main.home')}}"><img class="icon"
+                    src="./static/icons/home.png" alt="Home icon"></a>
+            <img class="icon" src="./static/icons/save.png" alt="Save icon">
+            <a href="{{ url_for('posts.hotspotsettings')}}">
+                <img class="icon" src="./static/icons/settings.png" alt="Settings icon">
+            </a>
+        </div>
+    </header>
+
+    <div class="left-panel-container">
+        <h4
+            style="text-align:center; background-color:#b6f8e4; color:black; display: inline-block; height: 50px; width: 100%;">
+            Hotspots
+        </h4>
+        <center>
+            <button class="btn1" onclick="createNewButton()">Create Hotspot</button>
+            <div id="buttonContainer"></div>
+        </center>
+        <div class="btn-control">
+            <button class="btn1" onclick="save()">Save</button>
+            <br>
+            <button class="btn1" onclick="cancel()">Cancel</button>
+        </div>
+    </div>
+
+    <div class="middle-container">
+        <div class="middle-wapper" id="middleWrapper">
+            <!-- Add a container for hotspots -->
+            <div id="hotspotContainer"></div>
+            <div class="controls">
+                <button id="playPauseButton">Play/Pause</button>
+                <input type="range" id="playBar" min="0" max="100" value="0">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var buttonCount = 0;
+
+        function createNewButton() {
+            if (buttonCount < 5) {
+                buttonCount++;
+                var buttonGroup = document.createElement("div");
+                buttonGroup.className = "button-group";
+
+                var newText = document.createElement("span");
+                newText.className = "btn";
+                var icon = document.createElement("i");
+                icon.className = "fa fa-map-marker";
+                icon.setAttribute("aria-hidden", "true");
+                newText.appendChild(icon);
+                newText.style.fontSize = "20px";
+                newText.appendChild(document.createTextNode(" Hotspot " + buttonCount));
+                newText.onclick = function () {
+                    alert("You clicked " + newText.textContent);
+                };
+
+                buttonGroup.appendChild(newText);
+                var br1 = document.createElement("br");
+                var br2 = document.createElement("br");
+                buttonGroup.appendChild(br1);
+                buttonGroup.appendChild(br2);
+
+                var editButton = document.createElement("button");
+                editButton.className = "edit-button"
+                editButton.textContent = "Edit";
+                editButton.onclick = function () {
+                    var newTextContent = prompt("Enter new text", newText.textContent);
+                    if (newTextContent !== null) {
+                        newText.textContent = newTextContent;
+                        newText.innerHTML = '';
+                        var newIcon = document.createElement("i");
+                        newIcon.className = "fa fa-map-marker";
+                        newIcon.setAttribute("aria-hidden", "true");
+                        newText.appendChild(newIcon);
+                        var icon = document.createElement("i");
+                        icon.className = "fa fa-map-marker";
+                        icon.setAttribute("aria-hidden", "true");
+                        newText.appendChild(document.createTextNode(" "));
+                        newText.appendChild(document.createTextNode(newTextContent));
+                    }
+                };
+
+                var deleteButton = document.createElement("button");
+                deleteButton.className = "delete-button"
+                deleteButton.textContent = "Delete";
+                deleteButton.onclick = function () {
+                    document.getElementById("buttonContainer").removeChild(buttonGroup);
+                    buttonCount--;
+                };
+
+                buttonGroup.appendChild(editButton);
+                document.getElementById("buttonContainer").appendChild(buttonGroup);
+                buttonGroup.appendChild(deleteButton);
+
+                newText.id = "hotspot_" + buttonCount;
+                newText.setAttribute('draggable', 'true');
+
+                // Add event listener for dragstart
+                newText.addEventListener('dragstart', function (event) {
+                    event.dataTransfer.setData('text/plain', event.target.id);
+                });
+            }
+        }
+
+        function save() {
+            window.location.href = "{{ url_for('posts.virtualtour', button_count='__button_count__') }}".replace('__button_count__', buttonCount);
+        }
+        function cancel() {
+            window.location.href = "{{ url_for('posts.virtualtour') }}";
+        }
+
+        //------------------ Script for 360 degree Video of the video thumbnail ----------------//
+        // create a scene
+        const scene = new THREE.Scene();
+
+        // create a perspective camera
+
+        // https://threejs.org/docs/#api/en/cameras/PerspectiveCamera
+
+        const width = 1280;
+        const height = 720;
+        const camera = new THREE.PerspectiveCamera(75, width / height, 1, 100);
+
+        // create a renderer
+        // https:// threejs.org/docs/#api/en/renderers/WebGLRenderer
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(width, height);
+
+        // display the renderer
+        const middleWrapper = document.querySelector('.middle-wapper');
+        middleWrapper.appendChild(renderer.domElement);
+
+        // create a sphere geometry
+        // https://threejs.org/docs/#api/en/geometries/SphereGeometry
+        const geometry = new THREE.SphereGeometry(15, 32, 16);
+
+        // create a VideoTexture
+        // create a video element and set attributes
+        const videoElement = document.createElement('video');
+        videoElement.src = "./static/test.mp4";
+        videoElement.loop = true;
+        videoElement.muted = true;
+        videoElement.playsInline = true;
+        videoElement.crossOrigin = "anonymous";
+        videoElement.controls = true; // Add this line to your code
+        videoElement.play();
+        const texture = new THREE.VideoTexture(videoElement);
+
+        // create a material from the texture
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+
+        // need to use back side - surface of the sphere is facing outside but we put the camera inside of the sphere
+        material.side = THREE.BackSide;
+
+        // create a mesh and add to the scene
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        renderer.setAnimationLoop(() => {
+            // Render the scene
+            renderer.render(scene, camera);
+
+            // Update the hotspots' positions based on camera rotation
+            updateHotspotsPosition();
+        });
+
+        // zoom in / out
+        const clamp = (v, min, max) => Math.max(min, Math.min(v, max));
+        renderer.domElement.addEventListener('wheel', e => {
+            camera.fov = clamp(camera.fov + e.deltaY / 10, 10, 120);
+            // need to call this function after changing most of properties in PerspectiveCamera
+            camera.updateProjectionMatrix();
+        });
+
+        // rotate camera
+        let mouseDown = false;
+        middleWrapper.addEventListener('mousedown', e => {
+            if (e.button === 0) mouseDown = true;
+        });
+
+        window.addEventListener('mouseup', e => {
+            if (e.button === 0) mouseDown = false;
+        });
+
+        window.addEventListener('mousemove', e => {
+            if (!mouseDown) return;
+
+            const { movementX, movementY } = e;
+
+            // rotateX: rotate vertically since x-axis is horizontal
+            //const rotateX = movementY / 100;
+            const rotateY = movementX / 100;
+
+            //camera.rotateX(rotateX);
+            camera.rotateY(rotateY);
+        });
+
+        document.getElementById('playPauseButton').addEventListener('click', function () {
+            if (videoElement.paused) {
+                videoElement.play();
+            } else {
+                videoElement.pause();
+            }
+        });
+
+        playBar.addEventListener('click', function (e) {
+            var percent = e.offsetX / this.offsetWidth;
+            videoElement.currentTime = percent * videoElement.duration;
+            playBar.value = percent / 100;
+        });
+
+        videoElement.addEventListener('timeupdate', function () {
+            var playBar = document.getElementById('playBar');
+            var value = (100 / videoElement.duration) * videoElement.currentTime;
+            playBar.value = value;
+        });
+
+
+
+
+        // Function to update hotspots' positions based on camera rotation
+        function updateHotspotsPosition() {
+            const hotspots = document.querySelectorAll('.hotspot');
+            const rect = middleWrapper.getBoundingClientRect();
+            const cameraRotation = camera.rotation.y;
+
+            hotspots.forEach(hotspot => {
+                // Get the original position of the hotspot
+                const originalX = parseFloat(hotspot.getAttribute('data-x'));
+                const originalY = parseFloat(hotspot.getAttribute('data-y'));
+
+                // Calculate the new position after camera rotation
+                const newX = originalX * Math.cos(cameraRotation) - originalY * Math.sin(cameraRotation);
+                const newY = originalX * Math.sin(cameraRotation) + originalY * Math.cos(cameraRotation);
+
+                // Update the position of the hotspot
+                hotspot.style.left = `${newX * 50 + 50}%`;
+                hotspot.style.top = `${newY * 50 + 50}%`;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let draggedHotspot = null; // Variable to store reference to the dragged hotspot
+
+            const dropContainer = document.getElementById('middleWrapper');
+            const hotspotContainer = document.getElementById('hotspotContainer');
+
+            dropContainer.addEventListener('dragover', function (event) {
+                event.preventDefault(); // Prevent default to allow drop
+            });
+
+            dropContainer.addEventListener('drop', function (event) {
+                event.preventDefault();
+                const data = event.dataTransfer.getData('text/plain');
+                draggedHotspot = document.getElementById(data); // Store reference to the dragged hotspot
+                const rect = dropContainer.getBoundingClientRect();
+                const x = (event.clientX - rect.left) / rect.width * 2 - 1;
+                const y = -(event.clientY - rect.top) / rect.height * 2 + 1;
+
+                // Create a new hotspot element
+                const hotspot = document.createElement('div');
+                hotspot.className = 'hotspot';
+                hotspot.setAttribute('data-x', x);
+                hotspot.setAttribute('data-y', y);
+                hotspot.style.left = `${x * 50 + 50}%`;
+                hotspot.style.top = `${y * 50 + 50}%`;
+
+                // Random color generation for hotspot
+                const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+                hotspot.style.backgroundColor = randomColor;
+
+                // Print X and Y axis positions for hotspot
+                const positionInfo = document.createElement('div');
+                positionInfo.innerHTML = `X: ${x}, Y: ${y}`;
+                hotspot.appendChild(positionInfo);
+
+                // Append the hotspot to the container
+                hotspotContainer.appendChild(hotspot);
+            });
+
+            hotspotContainer.addEventListener('click', function (event) {
+                if (event.target.classList.contains('hotspot')) {
+                    // Remove the clicked hotspot
+                    event.target.remove();
+
+                    // Remove the corresponding coordinates
+                    const x = event.target.getAttribute('data-x');
+                    const y = event.target.getAttribute('data-y');
+                    console.log('Deleting hotspot at X:', x, 'Y:', y);
+
+                    // Remove the corresponding dragged hotspot if it exists
+                    if (draggedHotspot) {
+                        draggedHotspot.remove();
+                        draggedHotspot = null;
+                    }
+                }
+            });
+
+
+
+            // Function to delete dragged hotspot when a hotspot is deleted
+            function deleteDraggedHotspot() {
+                if (draggedHotspot) {
+                    draggedHotspot.remove();
+                    draggedHotspot = null;
+                }
+            }
+        });
+
+        // Add an event listener to the toggleControlsButton
+        document.getElementById('toggleControlsButton').addEventListener('click', function () {
+            // Toggle the visibility of the playPauseButton and playBar elements
+            var playPauseButton = document.getElementById('playPauseButton');
+            var playBar = document.getElementById('playBar');
+
+            if (playPauseButton.style.display === 'none') {
+                playPauseButton.style.display = 'block';
+                playBar.style.display = 'block';
+            } else {
+                playPauseButton.style.display = 'none';
+                playBar.style.display = 'none';
+            }
+        });
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>

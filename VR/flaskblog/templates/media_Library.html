@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Gallery</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/stylesMedia.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/5.15.3/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+
+
+</head>
+
+<body>
+
+    <header class="title-bar">
+        <span class="title">Conversation: Create Experience Category No.3</span>
+        <div class="buttons-container">
+            <a class="nav-item nav-link" href="{{ url_for('main.home') }}"><img class="icon"
+                    src="./static/icons/home.png" alt="Home icon"></a>
+            <img class="icon" src="./static/icons/save.png" alt="Home icon">
+            <img class="icon" src="./static/icons/settings.png" alt="Home icon">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="top">
+            <div class="videos">
+                <div id="videoList"></div>
+            </div>
+        </div>
+
+        <div class="bottom">
+            <div class="main-video">
+                <video id="mainVideo" muted controls autoplay></video>
+            </div>
+        </div>
+
+
+        <!-- Move the button here -->
+
+
+        <div class="hidden">
+            <input type="file" id="videoFolder" accept=".mp4,.mkv" webkitdirectory mozdirectory multiple>
+        </div>
+
+        <div id="videoDetails" class="video-details-panel">
+            <hr class="styled-lineabove">
+            <button class="btn btn-styled" onclick="document.querySelector('#videoFolder').click()">
+                Upload Video
+            </button>
+            <hr class="styled-lineabove">
+            <h3 class="centered">Files added details</h3>
+        </div>
+        <div id="videoDetailsBelow" class="video-details-panel-below">
+            <hr class="styled-line">
+            <div class="centered"> video Selected : </div>
+            <hr class="styled-line">
+            <div id="playingFileName"></div>
+            <br><br>
+            <button class="btn btn-styled" onclick="goback()">Select Video</button>
+        </div>
+
+    </div>
+    <!-- jquery cdn link -->
+
+
+    <script>
+        var file_name;
+        function goback() {
+            alert('Selected Video file: '+ file_name);
+            window.location.href = "{{ url_for('posts.options') }}";
+            
+        }
+        (function () {
+            function handleVideoFolderChange(event) {
+
+                var files = event.target.files;
+
+                var filteredFiles = Array.from(files).filter(function (file) {
+                    return file.name.endsWith('.mp4') || file.name.endsWith('.mkv');
+                });
+
+                filteredFiles.sort(function (a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+
+                var videoListContainer = document.getElementById("videoList");
+                videoListContainer.innerHTML = "";
+
+                filteredFiles.forEach(function (file) {
+                    var video = document.createElement("video");
+                    video.src = URL.createObjectURL(file);
+                    video.muted = true;
+                    videoListContainer.appendChild(video);
+
+                    video.addEventListener("loadedmetadata", function () {
+                        var resolution = video.videoWidth + "x" + video.videoHeight;
+                        var duration = video.duration;
+                        var size = file.size;
+
+                        var nameElement = document.createElement("p");
+                        nameElement.className = "video-detail"; // add this line
+                        nameElement.innerText = "Name: " + file.name;
+                        document.getElementById("videoDetails").appendChild(nameElement);
+
+                        var resolutionElement = document.createElement("p");
+                        resolutionElement.innerText = "Resolution: " + resolution;
+                        document.getElementById("videoDetails").appendChild(resolutionElement);
+
+                        var duration = video.duration;
+                        var minutes = Math.floor(duration / 60);
+                        var seconds = Math.round(duration % 60);
+                        var durationElement = document.createElement("p");
+                        durationElement.innerText = "Duration: " + minutes + " minutes " + seconds + " seconds";
+                        document.getElementById("videoDetails").appendChild(durationElement);
+
+                        var size = file.size / (1024 * 1024); // size in MB
+                        var sizeElement = document.createElement("p");
+                        sizeElement.innerText = "Size: " + size.toFixed(2) + " MB"; // display size up to 2 decimal places
+                        document.getElementById("videoDetails").appendChild(sizeElement);
+
+                    });
+
+                    video.addEventListener("click", function () {
+                        document.getElementById("playingFileName").innerText = "Playing: " + file.name;
+                        file_name=file.name;
+                    });
+
+                });
+
+                var mainVideo = document.getElementById("mainVideo");
+                mainVideo.src = URL.createObjectURL(filteredFiles[0]);
+
+                var videoList = videoListContainer.querySelectorAll("video");
+                videoList.forEach(function (video, index) {
+                    video.addEventListener("click", function () {
+                        mainVideo.src = URL.createObjectURL(filteredFiles[index]);
+                    });
+                });
+
+            }
+
+            var videoFolderInput = document.getElementById("videoFolder");
+            videoFolderInput.addEventListener("change", handleVideoFolderChange);
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var videos = document.querySelectorAll('.videos video');
+                videos.forEach(function (video) {
+                    video.addEventListener('click', function () {
+                        videos.forEach(function (v) {
+                            v.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                        var src = this.getAttribute('src');
+                        document.querySelector('.main-video video').setAttribute('src', src);
+                    });
+                });
+            });
+        })();
+
+
+    </script>
+
+</body>
+
+</html>

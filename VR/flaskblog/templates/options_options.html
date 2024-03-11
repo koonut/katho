@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/stylesQuestion.css">
+    <title>Create Questionaire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- ... (existing meta tags and stylesheets) ... -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-w9SNJ2fE/GxwA3s56Hr5D9ZGGC6x5KGQ1r1C6kHtvDPzv68gRhDnxJo+JI9nrmy2O3tgZDnATBU5FGiUZ0MsUg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <header class="title-bar">
+        <span class="title">Create Questionaire</span>
+        <div class="buttons-container">
+            <a class="nav-item nav-link" href="{{ url_for('main.home') }}"><img class="icon"
+                    src="./static/icons/home.png" alt="Home icon"></a>
+            <img class="icon" src="./static/icons/save.png" alt="Home icon">
+            <img class="icon" src="./static/icons/settings.png" alt="Home icon">
+        </div>
+    </header>
+    <div class="container">
+        <h2>Add Title and Options for Conversation</h2>
+        <h2>Then add a Video to the answer</h2>
+        <form action="{{ url_for('posts.conversation') }}" method="post">
+            <label for="question">TITLE:</label>
+            <div class="center-align">
+                <textarea id="question" name="question1" rows="4" required style="width: 550px;"></textarea>
+                <label for="questionCheckbox"> Show Title(ON/OFF):</label>
+                <input type="checkbox" id="questionCheckbox" name="questionCheckbox" class="centre-checkbox">
+            </div>
+            <div class="question-separator"></div>
+            <label for="option1">Option 1:</label>
+            <input type="text"  name="options1[]" required style="width: 350px; height: 75px;">
+            <br>
+            <br>
+            <label for="score1">Score for Option 1:</label>
+            <input type="number" name="scores1[]" required style="width: 150px;">
+            <br>
+            <div class="option-separator"></div>
+            <div id="optionsContainer"></div>
+            <button type="button" onclick="addOption()" class="center-button">Add Option</button>
+            <button class="btn" type="button" style="margin-left: 70%;" onclick=videolibary()><i
+                    class="fa fa-plus-circle" aria-hidden="true"></i> Add video</button>
+            <input type="hidden" id="optionCountO" name="optionCountO" value="1">
+            <br>
+            <button id="saveButton" ,  type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function videolibary() {
+            window.location.href = "{{ url_for('posts.media_Library') }}";
+        }
+        let optionCountO = 1;
+        let addOptions = 2;
+        let maxOptions = 2; // define maxOptions
+
+        function addOption() {
+            if (optionCountO <= maxOptions) {
+                const optionsContainer = document.getElementById('optionsContainer');
+
+                const optionLabel = document.createElement('label');
+                optionLabel.textContent = `Option ${optionCountO + 1}:`;
+
+                const optionInput = document.createElement('input');
+                optionInput.type = 'text';
+                // optionInput.name = 'options[]';
+                optionInput.required = true;
+                optionInput.style.width = '350px'; // Add this line
+                optionInput.style.height = '75px'; // Add this line
+                optionsContainer.appendChild(document.createElement('br'));
+                optionsContainer.appendChild(optionLabel);
+                optionsContainer.appendChild(optionInput);
+                optionsContainer.appendChild(document.createElement('br'));
+
+                const scoreLabel = document.createElement('label');
+                scoreLabel.textContent = `Score for Option ${optionCountO + 1}:`;
+
+                const scoreInput = document.createElement('input');
+                scoreInput.type = 'number';
+                // scoreInput.name = 'scores[]';
+                scoreInput.required = true;
+                scoreInput.style.width = '150px';
+                optionsContainer.appendChild(document.createElement('br'));
+                optionsContainer.appendChild(scoreLabel);
+                optionsContainer.appendChild(scoreInput);
+
+                // Create a new div with the class 'option-separator'
+                const optionSeparator = document.createElement('div');
+                optionSeparator.className = 'option-separator';
+                optionsContainer.appendChild(optionSeparator);
+                optionsContainer.appendChild(document.createElement('br'));
+
+                optionCountO++;
+                document.getElementById('optionCountO').value = optionCountO;
+                // saveOptions(); // remove this if saveOptions is not defined
+            } else {
+                alert('You can add up to 3 options.');
+            }
+        }
+
+        // To get all the options count function conversation is created
+  
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/stylesvirtual.css">
+    <title>Virtual Tour</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- ... (existing meta tags and stylesheets) ... -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-w9SNJ2fE/GxwA3s56Hr5D9ZGGC6x5KGQ1r1C6kHtvDPzv68gRhDnxJo+JI9nrmy2O3tgZDnATBU5FGiUZ0MsUg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <header class="title-bar">
+        <span class="title">Library Name - Exprerience Name - Experience type </span>
+        <div class="buttons-container">
+            <a class="nav-item nav-link" href="{{ url_for('main.home') }}"><img class="icon"
+                    src="./static/icons/home.png" alt="Home icon"></a>
+            <img class="icon" src="./static/icons/save.png" alt="Home icon">
+            <img class="icon" src="./static/icons/settings.png" alt="Home icon">
+        </div>
+    </header>
+
+    <div class="left-panel-container">
+        <h4 style="text-align:center; color:white">Media Library</h4>
+        <div class="left-panel-wrapper">
+            <div class="left-panel">
+                <div class="upload-area">
+                    <input type="file" accept=".mp4" id="video-input" multiple>
+                </div>
+                <ul id="video-list" class="draggable-list">
+                    <!-- Video elements will be added here -->
+                </ul>
+            </div>
+        </div>
+        <div class="btn-control">
+            <button class="btn" onclick="scrollUp()"><i class="fa fa-backward" aria-hidden="true"></i></button>
+            <button class="btn" onclick="document.getElementById('video-input').click()"><i class="fa fa-plus-circle"
+                    aria-hidden="true"></i></button>
+            <button class="btn" onclick="scrollDown()"><i class="fa fa-forward" aria-hidden="true"></i></button>
+        </div>
+        <br><br><br><br>
+     <br>
+
+    </div>
+
+    <div class=middle-container>
+        <!-- First drag and drop rectangle at the top -->
+        <div class="drag-drop-rectangle" ondragover="allowDrop(event)" ondrop="drop(event)">
+            Drop Videos Here
+        </div>
+        <!-- Button to reveal the other rectangles -->
+        <br>
+        <!--
+        <script>
+            function hotspot() {
+                window.location.href = "{{ url_for('posts.hotspot') }}";
+            }
+        </script>
+        -->
+        <form action="/hotspot" method="GET">
+            <button type="submit" class="styled-button">Add Hotspot</button>
+        </form>
+        <br>
+        <button id="generateRectanglesButton" class="styled-button" onclick="generateRectangles()">Link video</button>
+        <div id="Display1"></div>
+            <div>
+                <div class="bottom-rectangles-container"></div>
+            </div>
+    </div>
+
+    <script>
+        let hotspot="{{buttonCount}}";
+        // Make the video items draggable *************************
+        document.getElementById("Display1").textContent = " Hotspot available :" + hotspot;
+        function makeVideosDraggable() {
+            const draggableItems = document.querySelectorAll('.draggable-video');
+            draggableItems.forEach((item) => {
+                item.setAttribute('draggable', 'true');
+                item.addEventListener('dragstart', (event) => {
+                    event.dataTransfer.setData('text/html', event.target.innerHTML);
+                    draggedItem = event.target;
+                });
+            });
+        }
+
+        // Handle file selection
+        const videoInput = document.getElementById('video-input');
+        const videoList = document.getElementById('video-list');
+        videoInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const videoItem = document.createElement('li');
+                videoItem.className = 'draggable-video';
+                const file = event.target.files[i];
+                const videoUrl = URL.createObjectURL(file);
+                videoItem.innerHTML = `<video src="${videoUrl}" controls></video>`; videoList.appendChild(videoItem);
+            }
+            makeVideosDraggable();
+
+            // Save the state after adding a file
+            saveState();
+        });
+         // ****************************************************
+         const buttonCount = hotspot;
+         function generateRectangles() {
+            // const buttonCount = '{{optionCount}}'; // Change this to the desired number of rectangles
+            const container = document.querySelector('.bottom-rectangles-container');
+            // Clear any existing content
+            container.innerHTML = '';
+            let video_num=1;
+            // Generate rectangles and "Add File" buttons based on buttonCount
+            for (let i = 0; i < buttonCount; i++) {
+                const rectangleContainer = document.createElement('div');
+                video_num++;
+                rectangleContainer.innerHTML = `
+                    <div class="drag-drop-rectangle1" ondragover="allowDrop(event)" ondrop="drop(event)">
+                        Drop Videos Here
+                    </div>
+                    <div class="add-file-button-container">
+                       
+                            <button type="submit" onclick="vt(video_num)" class="styled-button">Add hotspot</button>
+                           <br> <button type="submit" onclick="#" class="styled-button">Save</button>
+                    </a>
+                    </div>
+                `;
+                
+                container.appendChild(rectangleContainer);
+            }
+        }
+        function vt(video_num) {
+            
+        }
+        function saveState() {
+            const videoItems = Array.from(document.querySelectorAll('.draggable-video'));
+            const state = videoItems.map((item) => {
+                const videoSrc = item.querySelector('video').src;
+                return { src: videoSrc, dragged: item.getAttribute('draggable') === 'true', parent: getParentIndex(item) };
+            });
+            sessionStorage.setItem('videoState', JSON.stringify(state));
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+            event.target.style.border = '2px dashed #005bbd';
+        }
+
+        function drop(event) {
+            event.preventDefault();
+
+            if (draggedItem) {
+                // Clone the item element
+                const itemClone = draggedItem.cloneNode(true);
+                itemClone.removeAttribute('draggable');
+
+                // Clear the content of the drop area
+                event.target.innerHTML = '';
+
+                // Append the clone to the drop area
+                event.target.appendChild(itemClone);
+
+                makeVideosDraggable();
+                draggedItem = null;
+                event.target.style.border = '2px dashed #0073e6';
+
+                // If the dropped item is an "Add File" button, create two more rectangles below it
+                if (draggedItem.classList.contains('add-file-button')) {
+                    createBottomRectangles(event.target);
+                }
+
+                // Save the state after dropping an item
+                saveState();
+            }
+        }
+
+
+
+
+        // button scrollable  ***********************************************
+        const scrollStep = 100; // Change this to adjust the amount of scrolling
+        const leftPanelWrapper = document.querySelector('.left-panel-wrapper');
+
+        function scrollUp() {
+            leftPanelWrapper.scrollTop -= scrollStep;
+        }
+
+        function scrollDown() {
+            leftPanelWrapper.scrollTop += scrollStep;
+        }
+        //***********************************************************************
+
+        // Middle panel scrollable  ***********************************************
+        const zoomElement = document.querySelector(".middle-container");
+        let zoom = 1;
+        const ZOOM_SPEED = 0.1;
+
+        zoomElement.addEventListener("wheel", function (e) {
+            if (e.deltaY > 0 && zoom < 2) {
+                zoomElement.style.transform = `scale(${(zoom += ZOOM_SPEED)})`;
+            } else if (e.deltaY < 0 && zoom > 0.5) {
+                zoomElement.style.transform = `scale(${(zoom -= ZOOM_SPEED)})`;
+            }
+        });
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styles.css">
+    <title>Conversation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+
+    <!-- ... (existing meta tags and stylesheets) ... -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-w9SNJ2fE/GxwA3s56Hr5D9ZGGC6x5KGQ1r1C6kHtvDPzv68gRhDnxJo+JI9nrmy2O3tgZDnATBU5FGiUZ0MsUg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <header class="title-bar">
+        <span class="title">Conversation FeedBack: Score and save</span>
+        <div class="buttons-container">
+            <a class="nav-item nav-link" href="{{ url_for('main.home') }}"><img class="icon"
+                    src="./static/icons/home.png" alt="Home icon"></a>
+            <img class="icon" src="./static/icons/save.png" alt="Home icon">
+            <img class="icon" src="./static/icons/settings.png" alt="Home icon">
+        </div>
+    </header>
+    <div class="container">
+        <h2>Add the Granding Key for the final result.</h2>
+        <br>
+        <br>
+        <p class="for_score">Points</p>
+        <form action="{{ url_for('posts.conversation') }}" id="scoreForm" method="post"> 
+            <div class="score_number">
+                <label for="name" style="width: 120px;">Score Name:</label>
+                <input type="text" id="Scorename" name="name[]" required>
+                <label for="score1">If</label>
+                <input type="number" id="score1" name="score1[]" required>
+                <label for="score2">
+                    < </label>
+
+                        <input type="number" id="score2" name="score2[]" required> 
+                        <label for="score3">
+                            < </label>
+                                <input type="number" id="score3" name="score3[]" required>
+
+            </div>
+            <br>
+            <div class="score_number1"></div>
+            <div class="container">
+                <button type="button" class="btn" id="scoring" onclick="score()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add score</button>
+                <button type="button" class="btn"  onclick="reset()"> Reset score</button>
+            </div>
+
+       
+        <br><br><br>
+        <div class="container">
+            <button type="button" class="btn" onclick="cancelForm()">Cancel</button>
+            <button type="submit" class="btn">Save</button>
+         </form>
+        </div>
+
+
+    </div>
+    <script>
+        var clickCount = 0;
+        function score() {
+            if (clickCount < 2) {
+                var scoreNumberDiv = document.querySelector('.score_number').cloneNode(true);
+
+                // Add the cloned score_number div to the score_number1 div
+                document.querySelector('.score_number1').appendChild(scoreNumberDiv);
+
+                // Add a line break after the cloned score_number div
+                document.querySelector('.score_number1').appendChild(document.createElement('br'));
+                clickCount++;
+
+                // Disable the button after the third click
+                if (clickCount === 2) {
+                    document.getElementById('scoring').disabled = true;
+                }
+            }
+        }
+        function reset() {
+
+             document.getElementById("scoreForm").reset();
+        }
+        function cancelForm() {
+            window.location.href = "{{ url_for('posts.conversation') }}";
+        }
+
+        function saveForm() {
+            window.location.href = "{{ url_for('posts.conversation') }}";
+        }   
+    </script>
+</body>
+
+</html>

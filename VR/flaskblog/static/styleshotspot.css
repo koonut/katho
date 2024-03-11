@@ -1,0 +1,366 @@
+
+.title-bar {
+    background-color: #2bcc9c;
+    /* Green color */
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.title {
+    color: white;
+    font-size: 20px;
+    /*font-weight: bold;*/
+    margin-left: 40px;
+}
+
+.buttons-container {
+    display: flex;
+}
+
+.icon {
+    /*background-image: url("./static/icons/home.png");*/
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent; /* Added this line */
+    color: #ffffff;
+    height: 30px;
+    width: 30px;
+    display: block;
+    margin-left: 60px;
+    /* Other styles here */
+}
+.icon:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s;
+    color: blue;
+}
+
+
+
+/* **************** Left panel ********************/
+
+.left-panel-container {
+    float: left;
+    width: 20%;
+    max-height: 50%;
+    overflow: auto;
+    position: relative;
+}
+
+.left-panel {
+    padding: 20px;
+}
+
+.left-panel .upload-area {
+    margin: 10px;
+}
+
+.left-panel input[type="file"] {
+    display: none;
+}
+
+.left-panel-container::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: 5px;
+    /* Adjust the width of the border */
+    height: 17px;
+    background-color: #0073e6;
+    /* Adjust the color of the border */
+}
+
+.left-panel-container {
+    float: left;
+    width: 20%;
+    height: 94vh;
+    overflow: hidden;
+    /* Hide the scrollbar initially */
+    position: relative;
+    background-color: #2bcc9c;
+}
+
+.left-panel-wrapper {
+    position: relative;
+    height: 44%;
+    background-color: #b6f8e4;
+    /* Very light blue color for the left side background */
+    overflow-y: auto;
+    /* Use auto to show scrollbar when content overflows */
+    margin-right: -17px;
+    /* Adjust for the hidden scrollbar width */
+}
+
+
+
+/* ------------- left pannel button -------------------*/
+.btn {
+    background-color: transparent;
+    border: none;
+    color: black;
+    padding: 12px 16px;
+    font-size: 20px;
+    cursor: pointer;
+    width: 70%;
+}
+
+.btn-control {
+
+    margin-top: 330px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin-left: 50px;
+    width: 280px;
+
+
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    width: 100%; /* Set the width to 50% */
+    height: 30%;
+    overflow: auto; /* Add scrollability */
+}
+
+#buttonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 20px;
+    margin-top: 30px;
+    width: 70%; /* Set the width to 50% */
+    height: 30%;
+    border: 1px solid transparent;
+    overflow: auto; /* Add scrollability */
+}
+
+.btn1 {
+    background-color: white;
+    color: black;
+    padding: 12px 16px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 15px auto; /* Changed this line */
+    width: 70%;
+    display: block; /* Added this line */
+}
+
+/* ************* Left Panel Video *********************/
+
+video {
+    max-width: 100%;
+    height: auto;
+    scroll-margin-right: -2px;
+    /* Adjust the right margin as needed */
+    scroll-margin-left: 1px;
+    /* Adjust the left margin as needed */
+    flex-basis: 50%;
+    padding: 0;
+}
+
+.draggable-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: space-between;
+    margin-right: -10px;
+}
+
+.draggable-list li {
+    cursor: grab;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    width: calc(50% - 10px);
+    margin: 5px;
+    padding: 5px;
+}
+
+
+/***************************** Right Panel ***********************************/
+/*.right-panel {              // Need this if only two panels are required
+    float: right;
+    width: 80%;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+}*/
+
+.right-panel-container {
+    float: right;
+    /* Change from float: right to float: left to align right */
+    width: 20%;
+    height: 94vh;
+    overflow: hidden;
+    /* Hide the scrollbar initially */
+    position: relative;
+}
+
+.right-panel-wrapper {
+    position: relative;
+    height: 100%;
+    background-color: #b6f8e4;
+    /* Very light blue color for the right side background */
+    overflow-y: auto;
+    /* Use auto to show scrollbar when content overflows */
+    margin-left: -17px;
+    /* Adjust for the hidden scrollbar width */
+}
+
+.right-panel-container::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    height: 17px;
+    /* Adjust as needed based on your scrollbar width */
+    background-color: #e6f8a4;
+    /* Match the very light blue color */
+}
+
+/* -------------------- Middle Container -------------------*/
+
+/* Style for the drag-and-drop rectangles */
+
+.middle-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    padding: 0 20px; /* Adds 20px padding to the left and right */
+    margin-left: 20%;
+    
+}
+
+.drag-drop-rectangle {
+    margin-top: 5%;
+    border: 2px dashed #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 100px;
+}
+
+
+.center-container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-button {
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+/* hotspot buttons */
+
+.middle-wapper {
+    margin-top: 5%;
+    position: relative;
+}
+
+.controls {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-controls {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+#playPauseButton {
+    margin-right: 10px;
+}
+
+
+  /*Add styles for hotspot */
+  .hotspot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+} 
+
+
+
+/* ------------------------ */
+#playPauseButton {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+#playPauseButton:hover {
+    background-color: #0056b3;
+}
+
+#playBar {
+    width: 300px;
+    height: 5px;
+    background-color: #ddd;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+#playBar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #007BFF;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#playBar::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #007BFF;
+    border-radius: 50%;
+    cursor: pointer;
+}

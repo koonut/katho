@@ -1,0 +1,316 @@
+
+.title-bar {
+    background-color: #2bcc9c;
+    /* Green color */
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.title {
+    color: white;
+    font-size: 20px;
+    /*font-weight: bold;*/
+    margin-left: 40px;
+}
+
+.buttons-container {
+    display: flex;
+}
+
+.icon {
+    /*background-image: url("./static/icons/home.png");*/
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent; /* Added this line */
+    color: #ffffff;
+    height: 30px;
+    width: 30px;
+    display: block;
+    margin-left: 60px;
+    /* Other styles here */
+}
+.icon:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s;
+    color: blue;
+}
+
+
+
+/* **************** Left panel ********************/
+
+.left-panel-container {
+    float: left;
+    width: 20%;
+    max-height: 50%;
+    overflow: auto;
+    position: relative;
+}
+
+.left-panel {
+    padding: 20px;
+}
+
+.left-panel .upload-area {
+    margin: 10px;
+}
+
+.left-panel input[type="file"] {
+    display: none;
+}
+
+.left-panel-container::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: 5px;
+    /* Adjust the width of the border */
+    height: 17px;
+    background-color: #0073e6;
+    /* Adjust the color of the border */
+}
+
+.left-panel-container {
+    float: left;
+    width: 20%;
+    height: 94vh;
+    overflow: hidden;
+    /* Hide the scrollbar initially */
+    position: relative;
+    background-color: #2bcc9c;
+}
+
+.left-panel-wrapper {
+    position: relative;
+    height: 44%;
+    background-color: #b6f8e4;
+    /* Very light blue color for the left side background */
+    overflow-y: auto;
+    /* Use auto to show scrollbar when content overflows */
+    margin-right: -17px;
+    /* Adjust for the hidden scrollbar width */
+}
+
+
+
+/* ------------- left pannel button -------------------*/
+.btn {
+    background-color: DodgerBlue;
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.btn-control {
+    /*margin-left: 80px;
+    margin-top: 330px;*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+}
+
+/* ************* Left Panel Video *********************/
+
+video {
+    max-width: 100%;
+    height: auto;
+    scroll-margin-right: -2px;
+    /* Adjust the right margin as needed */
+    scroll-margin-left: 1px;
+    /* Adjust the left margin as needed */
+    flex-basis: 50%;
+    padding: 0;
+}
+
+.draggable-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: space-between;
+    margin-right: -10px;
+}
+
+.draggable-list li {
+    cursor: grab;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    width: calc(50% - 10px);
+    margin: 5px;
+    padding: 5px;
+}
+
+
+/***************************** Right Panel ***********************************/
+/*.right-panel {              // Need this if only two panels are required
+    float: right;
+    width: 80%;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+}*/
+
+.right-panel-container {
+    float: right;
+    /* Change from float: right to float: left to align right */
+    width: 20%;
+    height: 94vh;
+    overflow: hidden;
+    /* Hide the scrollbar initially */
+    position: relative;
+}
+
+.right-panel-wrapper {
+    position: relative;
+    height: 100%;
+    background-color: #b6f8e4;
+    /* Very light blue color for the right side background */
+    overflow-y: auto;
+    /* Use auto to show scrollbar when content overflows */
+    margin-left: -17px;
+    /* Adjust for the hidden scrollbar width */
+}
+
+.right-panel-container::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    height: 17px;
+    /* Adjust as needed based on your scrollbar width */
+    background-color: #e6f8a4;
+    /* Match the very light blue color */
+}
+
+/* -------------------- Middle Container -------------------*/
+
+/* Style for the drag-and-drop rectangles */
+
+.middle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    padding: 0 20px; /* Adds 20px padding to the left and right */
+    
+    margin-left: 20%;
+    
+}
+
+.drag-drop-rectangle {
+    margin-top: 5%;
+    border: 2px dashed #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 100px;
+}
+
+.drag-drop-rectangle1 {
+    margin-left: 28% ;
+    margin-top: 5%;
+    border: 2px dashed #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 100px;
+}
+.bottom-rectangles-container {
+    margin-top: 20px;
+    display: flex;
+}
+
+    .add-file-button-container {
+        margin-left: 12px;
+        margin-bottom: 10px;
+        white-space: nowrap;
+    }
+
+    .add-file-button {
+        margin-bottom: 0;
+    }
+
+    .styled-button {
+        margin-bottom: 10px;
+        background-color: #72caec;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .styled-button:hover {
+        background-color: #0056b3;
+    }
+
+    .styled-button:active {
+        background-color: #003080;
+    }
+    .bottom-rectangles-containerO {
+        margin-top: 20px;
+        display: flex;
+    }
+
+
+
+    .btn-control1 {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center; /* Centers the controls */
+        font-size: 1.2em; /* Makes the controls larger */
+        margin-bottom: 10%;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      label {
+        margin-bottom: 5px;
+      }
+      
+      input[type="text"]
+      {
+        width: 220px;
+        padding: 8px;
+        margin-right:10px ;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      
+      input[type="number"]
+      {
+        height: 39px;
+        margin-left: 10px;
+        margin-right:10px ;
+        width: 50px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 8px;
+      }
+      
+     .score_number
+     {
+        display: flex;
+     }
+
+
+    .for_score
+    {
+        margin-left: 450px;
+    }

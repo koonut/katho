@@ -1,0 +1,209 @@
+/* ------------- left pannel button -------------------*/
+.btn {
+    background-color: DodgerBlue;
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btnBack {
+    margin-top: 30px;
+    background-color: DodgerBlue;
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+  
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/* body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: black;
+    font-family: 'Brush Script MT', cursive;
+
+} */
+
+.container {
+    margin-left: 500px;
+    width: 600px;
+    height: 850px;
+    display: flex;
+    flex-direction: column;
+    background: rgb(238, 236, 236);
+    margin-right: 8%;
+    margin-bottom: 1%;
+    margin-top: 1%;
+}
+
+.container .top {
+    height: 500px;
+    width: 100%;
+    
+}
+
+.container .bottom {
+    height: 100%;
+    width: 100%;
+}
+
+.container .videos {
+    height: 480px;
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: nowrap;
+    list-style: none;
+    margin: 1rem 0;
+    overflow-x: scroll;
+    padding: 0 0 0 1rem;
+}
+
+.container .videos video {
+    width: 135px;
+    height: 100px;
+    margin: 10px;
+    object-fit: contain;
+    /* Changed from cover to contain */
+    cursor: pointer;
+    flex-direction: row;
+    transition: 0.2s;
+}
+
+.container .videos video:nth-child(1) {
+    margin-top: 0;
+}
+
+.container .videos video:hover,
+.container .videos .active {
+    transform: scale(1.06);
+    border: 3px solid blue;
+}
+
+.container .main-video {
+    width: 100%;
+
+}
+
+.container .main-video video {
+    width: 640px;
+    height: 360px;
+    object-fit: contain;
+    /* Changed from cover to contain */
+    border: 3px solid black;
+}
+
+.hidden {
+    display: none;
+}
+
+.btn.btn-styled {
+    background-color: DodgerBlue;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 16px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 2px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    width: 50%;
+    /* Add the following properties */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    /* adjust as needed */
+}
+
+.btn.btn-styled:hover {
+    background-color: rgb(141, 194, 247);;
+    color: black;
+    border: 2px solid #50ec55;
+}
+
+.video-details-panel {
+    position: fixed;
+    right: 0;
+    width: 20%;
+    height: 70%;
+    /* vh is a viewport-percentage length, 100vh is 100% of the viewport height */
+    overflow: auto;
+    /* add a scrollbar if the content is too long */
+    display: flex;
+    /* add this */
+    flex-direction: column;
+    /* add this */
+    margin-bottom: 9%;
+    background: linear-gradient(to bottom, #2bcc9c, #ffffff);
+    /* replace with your colors */
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.video-details-panel .styled-lineabove {
+    border: none;
+    border-top: 1px solid #f1bc0b;
+    /* Change color as needed */
+    margin: 10px 0;
+    /* Adjust space as needed */
+}
+
+
+.video-details-panel-below {
+    position: fixed;
+    right: 0;
+    width: 20%;
+    height: 20%;
+    /* vh is a viewport-percentage length, 100vh is 100% of the viewport height */
+    background-color: #17b83a;
+    /* replace #yourColor with the color you want */
+    overflow: auto;
+    /* add a scrollbar if the content is too long */
+    display: flex;
+    /* add this */
+    flex-direction: column;
+    /* add this */
+    margin-top: 35%;
+    background: linear-gradient(to top, #2bcc9c, #ffffff);
+    /* replace with your colors */
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.video-details-panel-below .styled-line {
+    border: none;
+    border-top: 1px solid #f1bc0b;
+    /* Change color as needed */
+    margin: 10px 0;
+    /* Adjust space as needed */
+}
+
+.video-detail {
+    border-top: 1px solid black;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.centered {
+    text-align: center;
+}
